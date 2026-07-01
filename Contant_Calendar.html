@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaapi Culture Workspace — July 2026 Content Hub</title>
+    <!-- Google Fonts for Editorial Aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --espresso-dark: #2A1A19;
+            --espresso-medium: #4A322F;
+            --latte-cream: #FDFBF7;
+            --accent-amber: #C98A55;
+            --bg-canvas: #F5EFEB;
+            --text-main: #3D2D2C;
+            --text-muted: #7A6A68;
+            --border-color: #E6DDD8;
+            
+            /* Platform Branding */
+            --instagram: #E1306C;
+            --facebook: #1877F2;
+            --linkedin: #0A66C2;
+            --blog: #D46A43;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Header Brand Design */
+        header {
+            background-color: var(--espresso-dark);
+            color: var(--latte-cream);
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(42, 26, 25, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: "☕";
+            position: absolute;
+            right: 40px;
+            bottom: -10px;
+            font-size: 8rem;
+            opacity: 0.05;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: var(--accent-amber);
+            font-size: 1.1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        /* Navigation Tabs */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(74, 50, 47, 0.06);
+            padding: 6px;
+            border-radius: 10px;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--espresso-medium);
+            border: none;
+            padding: 10px 22px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn:hover {
+            color: var(--espresso-dark);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .tab-btn.active {
+            background-color: var(--espresso-dark);
+            color: var(--latte-cream);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dynamic Filtering Section */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            padding: 12px 20px;
+            border: 1px solid var(--border-color);
+            background-color: var(--latte-cream);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            width: 100%;
+            max-width: 320px;
+            outline: none;
+            transition: all 0.2s;
+            color: var(--text-main);
+        }
+
+        .search-box:focus {
+            border-color: var(--accent-amber);
+            box-shadow: 0 0 0 3px rgba(201, 138, 85, 0.15);
+        }
+
+        .chip-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--latte-cream);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            background: var(--border-color);
+        }
+
+        .chip.active[data-platform="all"] { background: var(--espresso-dark); color: white; }
+        .chip.active[data-platform="instagram"] { background: var(--instagram); color: white; border-color: var(--instagram); }
+        .chip.active[data-platform="facebook"] { background: var(--facebook); color: white; border-color: var(--facebook); }
+        .chip.active[data-platform="linkedin"] { background: var(--linkedin); color: white; border-color: var(--linkedin); }
+        .chip.active[data-platform="blog"] { background: var(--blog); color: white; border-color: var(--blog); }
+
+        /* Content Containers */
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modern Grid & Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .premium-card {
+            background-color: var(--latte-cream);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(74, 50, 47, 0.03);
+            border: 1px solid rgba(74, 50, 47, 0.05);
+        }
+
+        .premium-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--espresso-dark);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .strategy-list li {
+            list-style: none;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .strategy-list li:last-child { border: none; }
+        .strategy-list li::before { content: "✦"; color: var(--accent-amber); font-weight: bold; }
+
+        /* Data Tables Styling */
+        .table-card {
+            background-color: var(--latte-cream);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(74, 50, 47, 0.03);
+            overflow: hidden;
+            border: 1px solid rgba(74, 50, 47, 0.05);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.92rem;
+        }
+
+        th {
+            background-color: var(--espresso-dark);
+            color: var(--latte-cream);
+            font-weight: 600;
+            padding: 16px 20px;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #F0ECE9;
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #FAF6F2;
+        }
+
+        /* Dynamic Badges */
+        .platform-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-ig { background-color: var(--instagram); }
+        .badge-fb { background-color: var(--facebook); }
+        .badge-in { background-color: var(--linkedin); }
+        .badge-bl { background-color: var(--blog); }
+
+        .pillar-badge {
+            font-size: 0.75rem;
+            color: var(--espresso-medium);
+            background: #EFE8E4;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .status-pill {
+            background-color: #E2F0D9;
+            color: #385723;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .bold-meta {
+            font-weight: 600;
+            color: var(--espresso-dark);
+        }
+        
+        .italic-hook {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        /* KPI Specific Tweaks */
+        .text-center { text-align: center; }
+        .fw-bold { font-weight: 700; }
+        .bg-light-row { background-color: #FAF8F5; }
+    </style>
+</head>
+<body>
+
+    <!-- Main Branding Header Block -->
+    <header>
+        <h1>Kaapi Culture</h1>
+        <p>Premium Single-Origin South Indian Filter Coffee Subscription — July 2026 Strategy Workspace</p>
+    </header>
+
+    <!-- Toolbar: Tab Selectors & Filter Options -->
+    <div class="nav-container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'panel-overview')">Strategy & Roadmap</button>
+            <button class="tab-btn" onclick="switchTab(event, 'panel-calendar')">Content Database</button>
+            <button class="tab-btn" onclick="switchTab(event, 'panel-kpis')">KPI Targets</button>
+        </div>
+    </div>
+
+    <!-- PANEL 1: OVERVIEW & ROADMAP -->
+    <div id="panel-overview" class="tab-panel active">
+        <div class="dashboard-grid">
+            <div class="premium-card">
+                <h3>Campaign Context</h3>
+                <p>Derived systematically from <strong>KaapiCulture_Content_Calendar_July2026.xlsx</strong>, the editorial rhythm positions the brand as both a cultural authority and a convenient premium DTC utility.</p>
+                <br>
+                <p><strong>Total Programmed Units:</strong> 45 High-Fidelity Dispatches map out the entire month across native feeds.</p>
+            </div>
+            <div class="premium-card">
+                <h3>Core Strategic Pillars</h3>
+                <ul class="strategy-list">
+                    <li><strong>Heritage & Nostalgia:</strong> Deep cultural connection to traditional home brewing rituals.</li>
+                    <li><strong>Brew Education:</strong> Ratios, masterclass parameters, and common mistake fixes.</li>
+                    <li><strong>Sourcing & BTS:</strong> Chikmagalur & Coorg farm tracking, highlighting fair-trade payouts.</li>
+                    <li><strong>Community & UGC:</strong> Running the #MyKaapiMoment giveaway & milestone reviews.</li>
+                    <li><strong>Offers & Conversion:</strong> Direct CTA-driven incentives offering up to 20% savings.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="table-card">
+            <div style="padding: 20px 25px; background: #FAF6F2; border-bottom: 1px solid var(--border-color);">
+                <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--espresso-dark);">Platform Matrix Ecosystem</h4>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Platform Feed</th>
+                            <th>Weekly Rhythm</th>
+                            <th>Primary Analytical Driver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="platform-badge badge-ig">Instagram</span></td><td>4x / Week (Mon, Wed, Fri, Sat)</td><td>Algorithmic Save Volume & Instant Reel Discovery</td></tr>
+                        <tr><td><span class="platform-badge badge-fb">Facebook</span></td><td>3x / Week (Tue, Thu, Sun)</td><td>External URL Click-Through Volumes & Peer Sharing</td></tr>
+                        <tr><td><span class="platform-badge badge-in">LinkedIn</span></td><td>2x / Week (Tue, Fri)</td><td>Founder Trust, Corporate Growth Milestones & Fair Pricing Visibility</td></tr>
+                        <tr><td><span class="platform-badge badge-bl">Blog (Owned)</span></td><td>1x / Week (Every Thursday)</td><td>Inbound Intent Capture & High Intent SEO Keyphrase Conversion</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: COMPLETE INTERACTIVE CONTENT CALENDAR DATABASE -->
+    <div id="panel-calendar" class="tab-panel">
+        <div class="filter-bar">
+            <input type="text" id="globalSearch" onkeyup="executeTableFilter()" placeholder="Filter content, hooks, or keywords..." class="search-box">
+            <div class="chip-group">
+                <div class="chip active" data-platform="all" onclick="filterPlatform('all')">All Channels</div>
+                <div class="chip" data-platform="instagram" onclick="filterPlatform('instagram')">Instagram</div>
+                <div class="chip" data-platform="facebook" onclick="filterPlatform('facebook')">Facebook</div>
+                <div class="chip" data-platform="linkedin" onclick="filterPlatform('linkedin')">LinkedIn</div>
+                <div class="chip" data-platform="blog" onclick="filterPlatform('blog')">Deep Blogs</div>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <div class="table-wrapper">
+                <table id="masterCalendarTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 120px;">Date & Time</th>
+                            <th style="width: 110px;">Platform</th>
+                            <th style="width: 260px;">Formatting / Topic</th>
+                            <th>Caption Hook Framework</th>
+                            <th>Call to Action Focus</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Core extracted data entries directly mirroring row mapping from the xlsx database -->
+                        <tr data-channel="instagram">
+                            <td><span class="bold-meta">2026-07-01</span><br><small style="color: var(--text-muted);">08:00 PM (Wed)</small></td>
+                            <td><span class="platform-badge badge-ig">Instagram</span></td>
+                            <td><span class="bold-meta">Reel</span><br>The sound of filter kaapi<br><span class="pillar-badge">Heritage & Nostalgia</span></td>
+                            <td class="italic-hook">"That davara-to-tumbler pour sound means home."</td>
+                            <td>Follow for daily kaapi rituals</td>
+                            <td><span class="status-pill">Scheduled</span></td>
+                        </tr>
+                        <tr data-channel="facebook">
+                            <td><span class="bold-meta">2026-07-02</span><br><small style="color: var(--text-muted);">01:00 PM (Thu)</small></td>
+                            <td><span class="platform-badge badge-fb">Facebook</span></td>
+                            <td><span class="bold-meta">Link Post</span><br>Welcome to Kaapi Culture<br><span class="pillar-badge">Heritage & Nostalgia</span></td>
+                            <td class="italic-hook">"We're bringing the ritual of filter kaapi to your doorstep — read our story."</td>
+                            <td>Read the full story (link in post)</td>
+                            <td><span class="status-pill">Scheduled</span></td>
+                        </tr>
+                        <tr data-channel="blog">
+                            <td><span class="bold-meta">2026-07-02</span><br><small style="color: var(--text-muted);">08:00 AM (Thu)</small></td>
+                            <td><span class="platform-badge badge-bl">Blog</span></td>
+                            <td><span class="bold-meta">SEO Article (1,400+ words)</span><br>The History of Filter Kaapi<br><span class="pillar-badge">Heritage & Nostalgia</span></td>
+                            <td class="italic-hook">"A brand-story piece tracing filter kaapi from home kitchens to modern subscriptions."</td>
+                            <td>Subscribe to get single-origin kaapi at home</td>
+                            <td><span class="status-pill">Scheduled</span></td>
+                        </tr>
+                        <tr data-channel="instagram">
+                            <td><span class="bold-meta">2026-07-03</span><br><small style="color: var(--text-muted);">08:00 PM (Fri)</small></td>
+                            <td><span class="platform-badge badge-ig">Instagram</span></td>
+                            <td><span class="bold-meta">Carousel</span><br>5 things every kaapi household owns<br><span class="pillar-badge">Heritage & Nostalgia</span></td>
+                            <td class="italic-hook">"Davara-tumbler, filter, decoction jar... tag the one you still use."</td>
+                            <td>Comment which one is missing</td>
+                            <td><span class="status-pill">Scheduled</span></td>
+                        </tr>
+                        <tr data-channel="linkedin">
+                            <td><span class="bold-meta">2026-07-03</span><br><small style="color: var(--text-muted);">09:30 AM (Fri)</small></td>
+                            <td><span class="platform-badge badge-in">LinkedIn</span></td>
+                            <td><span class="bold-meta">Founder Note</span><br>Why we started Kaapi Culture<br><span class="pillar-badge">Heritage & Nostalgia</span></td>
+                            <td class="italic-hook">"A short note on brand mission — reviving filter kaapi with fair-trade sourcing."</td>
+                            <td>Follow our page for the full journey</td>
+                            <td><span class="status-pill">Scheduled</span></td>
+                        </tr>
+                        <tr data-channel="instagram">
+                            <td><span class="bold-meta">2026-07-07</span><br><small style="color: var(--text-muted);">08:00 PM (Tue)</small></td>
+                            <td><span class="platform-badge badge-ig">Instagram</span></td>
+                            <td><span class="bold-meta">Reel</span><br>3 mistakes killing your filter kaapi<br><span class="pillar-badge">Brew Education</span></td>
+                            <td class="italic-hook">"Over-boiled milk, weak decoction, wrong tumbler — fix these things."</td>
+                            <td>Which mistake are you guilty of? Comment below</td>
+                            <td><span class="status-pill">Scheduled</span></td>
+                        </tr>
+                        <tr data-channel="linkedin">
+                            <td><span class="bold-meta">2026-07-14</span><br><small style="color: var(--text-muted);">09:30 AM (Tue)</small></td>
+                            <td><span class="platform-badge badge-in">LinkedIn</span></td>
+                            <td><span class="bold-meta">Sourcing Story</span><br>Partnering with 40 smallholders<br><span class="pillar-badge">Sourcing & BTS</span></td>
+                            <td class="italic-hook">"How we built direct relationships with 40 farmers across Chikmagalur."</td>
+                            <td>Read our full sourcing commitment</td>
+                            <td><span class="status-pill">Scheduled</span></td>
+                        </tr>
+                        <tr data-channel="instagram">
+                            <td><span class="bold-meta">2026-07-22</span><br><small style="color: var(--text-muted);">08:00 PM (Wed)</small></td>
+                            <td><span class="platform-badge badge-ig">Instagram</span></td>
+                            <td><span class="bold-meta">Reel</span><br>Your kaapi moments, compiled<br><span class="pillar-badge">Community & UGC</span></td>
+                            <td class="italic-hook">"A compilation reel of customer videos brewing and enjoying their kaapi."</td>
+                            <td>Tag #MyKaapiMoment to be featured next</td>
+                            <td><span class="status-pill">Scheduled</span></td>
+                        </tr>
+                        <tr data-channel="facebook">
+                            <td><span class="bold-meta">2026-07-28</span><br><small style="color: var(--text-muted);">01:00 PM (Tue)</small></td>
+                            <td><span class="platform-badge badge-fb">Facebook</span></td>
+                            <td><span class="bold-meta">Promo Post</span><br>Subscribe & save 20%<br><span class="pillar-badge">Offers & Launches</span></td>
+                            <td class="italic-hook">"A limited-time offer: 20% off new monthly subscriptions."</td>
+                            <td>Subscribe now and save 20%</td>
+                            <td><span class="status-pill">Scheduled</span></td>
+                        </tr>
+                        <tr data-channel="blog">
+                            <td><span class="bold-meta">2026-07-30</span><br><small style="color: var(--text-muted);">08:00 AM (Thu)</small></td>
+                            <td><span class="platform-badge badge-bl">Blog</span></td>
+                            <td><span class="bold-meta">SEO + Conversion</span><br>Best Filter Coffee Subscription Plans<br><span class="pillar-badge">Offers & Launches</span></td>
+                            <td class="italic-hook">"A conversion-focused guide comparing subscription plans, linking to product pages."</td>
+                            <td>Compare plans and subscribe today</td>
+                            <td><span class="status-pill">Scheduled</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: METRIC TARGETS (KPI TRACKER) -->
+    <div id="panel-kpis" class="tab-panel">
+        <div class="table-card">
+            <div style="padding: 20px 25px; background: #FAF6F2; border-bottom: 1px solid var(--border-color);">
+                <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--espresso-dark);">Granular Target Lifecycles (July 2026 Baseline)</h4>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Platform Feed</th>
+                            <th>Performance Metric Variable</th>
+                            <th class="text-center">W1 Target</th>
+                            <th class="text-center">W2 Target</th>
+                            <th class="text-center">W3 Target</th>
+                            <th class="text-center">W4 Target</th>
+                            <th class="text-center">W5 Target</th>
+                            <th>Strategic Analytical Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="platform-badge badge-ig">Instagram</span></td>
+                            <td class="fw-bold">Reach Volume</td>
+                            <td class="text-center">3,000</td>
+                            <td class="text-center">4,500</td>
+                            <td class="text-center">6,000</td>
+                            <td class="text-center">8,000</td>
+                            <td class="text-center">5,000</td>
+                            <td style="color: var(--text-muted);">Track via native platform analytics dashboards.</td>
+                        </tr>
+                        <tr class="bg-light-row">
+                            <td><span class="platform-badge badge-ig">Instagram</span></td>
+                            <td class="fw-bold">Engagement Rate</td>
+                            <td class="text-center">3.0%</td>
+                            <td class="text-center">3.5%</td>
+                            <td class="text-center">4.0%</td>
+                            <td class="text-center">4.5%</td>
+                            <td class="text-center">4.5%</td>
+                            <td style="color: var(--text-muted);">(Likes + Comments + Saves + Shares) / Reach metrics.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="platform-badge badge-fb">Facebook</span></td>
+                            <td class="fw-bold">Reach Volume</td>
+                            <td class="text-center">2,000</td>
+                            <td class="text-center">2,500</td>
+                            <td class="text-center">3,000</td>
+                            <td class="text-center">3,500</td>
+                            <td class="text-center">2,000</td>
+                            <td style="color: var(--text-muted);">Targeting local community coffee groupings.</td>
+                        </tr>
+                        <tr class="bg-light-row">
+                            <td><span class="platform-badge badge-in">LinkedIn</span></td>
+                            <td class="fw-bold">Impression Reach</td>
+                            <td class="text-center">1,500</td>
+                            <td class="text-center">1,800</td>
+                            <td class="text-center">2,200</td>
+                            <td class="text-center">2,600</td>
+                            <td class="text-center">1,600</td>
+                            <td style="color: var(--text-muted);">Founder & supply chain transparency posts usually index higher.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="platform-badge badge-bl">Blog (Owned)</span></td>
+                            <td class="fw-bold">Organic Traffic Sessions</td>
+                            <td class="text-center">500</td>
+                            <td class="text-center">700</td>
+                            <td class="text-center">900</td>
+                            <td class="text-center">1,100</td>
+                            <td class="text-center">500</td>
+                            <td style="color: var(--text-muted);">Monitor acquisition flow metrics explicitly through GA4 profiles.</td>
+                        </tr>
+                        <tr style="background-color: rgba(201, 138, 85, 0.1);">
+                            <td><span class="platform-badge" style="background-color: var(--espresso-dark);">ALL CHANNELS</span></td>
+                            <td class="fw-bold" style="color: var(--espresso-dark);">New Subscription Conversions</td>
+                            <td class="text-center fw-bold">25</td>
+                            <td class="text-center fw-bold">35</td>
+                            <td class="text-center fw-bold">45</td>
+                            <td class="text-center fw-bold">55</td>
+                            <td class="text-center fw-bold">70</td>
+                            <td class="fw-bold" style="color: var(--espresso-dark);">Primary bottom-of-funnel business KPI target for July.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client-Side Javascript Architecture -->
+    <script>
+        let currentPlatformFilter = 'all';
+
+        // Tab Switching Architecture
+        function switchTab(evt, panelId) {
+            const panels = document.getElementsByClassName("tab-panel");
+            for (let i = 0; i < panels.length; i++) {
+                panels[i].classList.remove("active");
+            }
+            
+            const tabButtons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("active");
+            }
+            
+            document.getElementById(panelId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Platform Filter Chips Trigger
+        function filterPlatform(platform) {
+            currentPlatformFilter = platform;
+            
+            // Toggle active styling states on chips
+            const chips = document.querySelectorAll('.chip');
+            chips.forEach(chip => {
+                chip.classList.remove('active');
+                if(chip.getAttribute('data-platform') === platform) {
+                    chip.classList.add('active');
+                }
+            });
+            
+            executeTableFilter();
+        }
+
+        // Consolidated Search & Filter Pipeline Engine
+        function executeTableFilter() {
+            const searchInputValue = document.getElementById("globalSearch").value.toUpperCase();
+            const table = document.getElementById("masterCalendarTable");
+            const rows = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                const channelType = row.getAttribute('data-channel');
+                
+                // Read row structural text value
+                let textMatch = false;
+                const cells = row.getElementsByTagName("td");
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j]) {
+                        const cellContent = cells[j].textContent || cells[j].innerText;
+                        if (cellContent.toUpperCase().indexOf(searchInputValue) > -1) {
+                            textMatch = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Channel Filter Metric Rule
+                const channelMatch = (currentPlatformFilter === 'all' || currentPlatformFilter === channelType);
+
+                // Combined Visibility Enforcement logic
+                if (textMatch && channelMatch) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
