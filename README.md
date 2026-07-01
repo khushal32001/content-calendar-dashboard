@@ -123,4 +123,4 @@ This project is available for educational and personal use.
 
 Developed by Khushal Charaniya
 
-GitHub: https://github.com/your-username
+GitHub: https://github.com/khushal32001/content-calendar-dashboard.git
